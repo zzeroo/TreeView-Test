@@ -31,6 +31,33 @@ macro_rules! clone {
 }
 
 
+fn append_column(treeview: &gtk::TreeView, id: i32, title: String) {
+    let column = gtk::TreeViewColumn::new();
+    let cell = gtk::CellRendererText::new();
+
+    column.pack_start(&cell, true);
+    // // Die Daten und das View werden über `id` Spalte des Models und
+    // über die `id` Spalte des Stores verbunden.
+    column.add_attribute(&cell, "text", id);
+    column.set_title(&title);
+    // Diverse Attribute
+    column.set_resizable(false);
+    column.set_clickable(false);
+    treeview.append_column(&column);
+}
+
+/// Basis Setup des TreeViews
+///
+fn setup_treeview(treeview: &gtk::TreeView) {
+    append_column(&treeview, 0, "Modbus Slave Id".to_string());
+    append_column(&treeview, 1, "Type".to_string());
+    append_column(&treeview, 2, "Value".to_string());
+    append_column(&treeview, 3, "SI".to_string());
+    append_column(&treeview, 4, "Errors".to_string());
+}
+
+
+
 fn main() {
     gtk::init().unwrap_or_else(|_| panic!("phoronix-reader: failed to initialize GTK."));
 
@@ -59,6 +86,39 @@ fn main() {
         info_bar.connect_response(clone!(info_bar => move |info_bar, _| info_bar.hide() ));
     }
 
+    // TreeView
+    let treeview = gtk::TreeView::new();
+
+    // TreeStore
+    let treestore = gtk::TreeStore::new(
+        &[
+        u32::static_type(),     // Modbus Slave ID
+        String::static_type(),  // Type
+        String::static_type(),  // Value
+        String::static_type(),  // SI
+        u32::static_type(),     // Error Counter
+        ]
+    );
+    treeview.set_model(Some(&treestore));
+    setup_treeview(&treeview);
+    // Header verstecken
+    treeview.set_headers_visible(true);
+
+    for i in 1..20 {
+        treestore.insert_with_values(
+            None,
+            None,
+            &[0, 1, 2, 3, 4],
+            &[
+                &i,
+                &"Test Kombisensor",
+                &"0",
+                &"ppm",
+                &0
+            ]
+        );
+
+    }
 
 
 
@@ -68,9 +128,11 @@ fn main() {
 
     box_main.add(&info_bar);
 
+    box_main.add(&treeview);
+
     window.add(&box_main);
     window.show_all();
-    
+
     info_bar.hide();
 
     // Quit the program when the program has been exited
