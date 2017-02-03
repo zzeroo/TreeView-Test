@@ -59,18 +59,57 @@ fn main() {
         info_bar.connect_response(clone!(info_bar => move |info_bar, _| info_bar.hide() ));
     }
 
+    let scrolled_window = gtk::ScrolledWindow::new(None, None);
+    scrolled_window.set_min_content_height(400);
 
+    let list_box = gtk::ListBox::new();
+    for i in 1..20 {
+        let row1 = gtk::ListBoxRow::new();
+        let row2 = gtk::ListBoxRow::new();
+        let row3 = gtk::ListBoxRow::new();
 
+        let kombisensor_type = gtk::TextView::new();
+        kombisensor_type.get_buffer().unwrap().set_text(&format!("Test Kombisensor {}", i));
+        kombisensor_type.set_editable(false);
+        kombisensor_type.set_left_margin(5);
+        kombisensor_type.set_right_margin(5);
+        kombisensor_type.set_halign(gtk::Align::Start);
+
+        let sensor1_type = gtk::TextView::new();
+        sensor1_type.get_buffer().unwrap().set_text(&format!("NO2 Sensor {}", i));
+        sensor1_type.set_editable(false);
+        sensor1_type.set_left_margin(15);
+        sensor1_type.set_right_margin(15);
+        sensor1_type.set_halign(gtk::Align::Start);
+
+        let sensor2_type = gtk::TextView::new();
+        sensor2_type.get_buffer().unwrap().set_text(&format!("CO Sensor {}", i));
+        sensor2_type.set_editable(false);
+        sensor2_type.set_left_margin(15);
+        sensor2_type.set_right_margin(15);
+        sensor2_type.set_halign(gtk::Align::Start);
+
+        row1.add(&kombisensor_type);
+        row2.add(&sensor1_type);
+        row3.add(&sensor2_type);
+
+        list_box.insert(&row1, -1);
+        list_box.insert(&row2, -1);
+        list_box.insert(&row3, -1);
+    }
 
 
 
 
 
     box_main.add(&info_bar);
+    box_main.add(&list_box);
 
-    window.add(&box_main);
+    scrolled_window.add(&box_main);
+
+    window.add(&scrolled_window);
     window.show_all();
-    
+
     info_bar.hide();
 
     // Quit the program when the program has been exited

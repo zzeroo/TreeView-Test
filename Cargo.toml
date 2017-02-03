@@ -9,7 +9,7 @@ dev = []
 [dependencies]
 gdk = "0.5.1"
 glib = "0.1.1"
-gtk = { version = "0.1.1", features = ["v3_16"] }
+gtk = { version = "0.1.1", features = ["v3_18"] }
 hyper = "0.10"
 libc = "0.2.18"
 rand = "0.3"
