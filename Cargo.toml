@@ -1,0 +1,21 @@
+[package]
+name = "treeview-test"
+version = "0.1.0"
+authors = ["Stefan Müller <s.mueller@it.kls-glt.de>"]
+
+[features]
+dev = []
+
+[dependencies]
+gdk = "0.5.1"
+glib = "0.1.1"
+gtk = { version = "0.1.1", features = ["v3_16"] }
+hyper = "0.10"
+libc = "0.2.18"
+rand = "0.3"
+serde = "0.9"
+serde_json = "0.9"
+xmz_server = { git = "https://github.com/Kliemann-Service-GmbH/xMZ-Mod-Touch-Server.git" }
+# xmz_server = { path = "../xMZ-Mod-Touch-Server"}
+gobject-sys = "0.3.2"
+gtk-sys = "0.3.2"
